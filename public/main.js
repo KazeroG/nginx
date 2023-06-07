@@ -14,18 +14,16 @@ window.addEventListener("DOMContentLoaded", () => {
     submitButton.style.display = "none";
     spinner.style.display = "block";
     const prompt = promptInput.value;
-    const response = await fetch("https://flask-production-4552.up.railway.app/process_prompt", {
+    const response = await fetch(`${process.env.API_BASE_URL}/process_prompt`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        prompt
-      })
+        prompt,
+      }),
     });
-
-    const responseSection = document.querySelector("#response-section");
-
+  
     if (response.ok) {
       const data = await response.json();
       outputDiv.innerHTML = `<pre style="white-space: pre-wrap;">${JSON.stringify(
@@ -33,10 +31,10 @@ window.addEventListener("DOMContentLoaded", () => {
         null,
         2
       )}</pre>`;
-      document.querySelector("#response-section").classList.remove("hidden");
+      responseSection.classList.remove("hidden");
     } else {
       outputDiv.textContent = `Error: ${response.status}`;
-      document.querySelector("#response-section").classList.remove("hidden");
+      responseSection.classList.remove("hidden");
     }
     submitButton.style.display = "block";
     spinner.style.display = "none";
@@ -46,7 +44,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const username = prompt("Enter your username");
     const email = prompt("Enter your email");
     const password = prompt("Enter your password");
-    const response = await fetch("https://flask-production-4552.up.railway.app/register", {
+    const response = await fetch(`${process.env.API_BASE_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -69,7 +67,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loginButton.addEventListener("click", async () => {
     const email = prompt("Enter your email");
     const password = prompt("Enter your password");
-    const response = await fetch("https://flask-production-4552.up.railway.app/login", {
+    const response = await fetch(`${process.env.API_BASE_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -79,7 +77,7 @@ window.addEventListener("DOMContentLoaded", () => {
         password
       })
     });
-
+  
     if (response.ok) {
       const data = await response.json();
       const { access_token } = data;
