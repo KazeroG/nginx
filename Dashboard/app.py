@@ -3,12 +3,7 @@ from dotenv import load_dotenv
 import streamlit as st
 import requests
 import pandas as pd
-
-# Load environment variables
-load_dotenv()
-
-# Define API endpoint
-API_ENDPOINT = os.getenv("API_ENDPOINT")  # get the API endpoint from .env file
+import os
 
 def display_user_form():
     with st.form(key='user_form'):
@@ -20,7 +15,7 @@ def display_user_form():
         submit_button = st.form_submit_button('Add User')
         if submit_button:
             if username and email and password:
-                response = requests.post(f'{API_ENDPOINT}/register', json={
+                response = requests.post(f'https://flask-backend-prod.up.railway.app/register', json={
                     'username': username,
                     'email': email,
                     'password': password
