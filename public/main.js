@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
     submitButton.style.display = "none";
     spinner.style.display = "block";
     const prompt = promptInput.value;
-    const response = await fetch("https://flask-production-4552.up.railway.app/process_prompt", {
+    const response = await fetch("http://localhost:5000/process_prompt", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -46,7 +46,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const username = prompt("Enter your username");
     const email = prompt("Enter your email");
     const password = prompt("Enter your password");
-    const response = await fetch("https://flask-production-4552.up.railway.app/register", {
+    const response = await fetch("http://localhost:5000/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -69,7 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loginButton.addEventListener("click", async () => {
     const email = prompt("Enter your email");
     const password = prompt("Enter your password");
-    const response = await fetch("https://flask-production-4552.up.railway.app/login", {
+    const response = await fetch("http://localhost:5000/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
