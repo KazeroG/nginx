@@ -3,4 +3,5 @@ Requests
 flask_wtf
 wtforms
 flask 
-pandas 
+pandas
+gunicorn
