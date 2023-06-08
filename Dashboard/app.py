@@ -43,7 +43,7 @@ def home():
     if response.status_code == 200:
         users = response.json()
 
-    return render_template('index.html', form=form, users=users)
+    return render_template('./index.html', form=form, users=users)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
