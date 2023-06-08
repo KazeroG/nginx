@@ -1,35 +1,47 @@
-import os
+from flask import Flask, request, render_template, flash, redirect, url_for
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
 from dotenv import load_dotenv
-import streamlit as st
 import requests
 import pandas as pd
 import os
 
-def display_user_form():
-    with st.form(key='user_form'):
-        st.write('Add a new user:')
-        username = st.text_input('Username')
-        email = st.text_input('Email')
-        password = st.text_input('Password', type='password')
+# Load environment variables
+load_dotenv()
 
-        submit_button = st.form_submit_button('Add User')
-        if submit_button:
-            if username and email and password:
-                response = requests.post(f'https://flask-backend-prod.up.railway.app/register', json={
-                    'username': username,
-                    'email': email,
-                    'password': password
-                })
-                if response.status_code == 201:
-                    st.success("User added successfully!")
-                else:
-                    st.error("Failed to add user!")
-            else:
-                st.error("Please fill out all fields.")
+# Define API endpoint
+API_ENDPOINT = os.getenv("API_ENDPOINT")  # get the API endpoint from .env file
 
-def main():
-    st.title("User Management Dashboard")
-    display_user_form()
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    main()
+class UserForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Add User')
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    form = UserForm()
+
+    if form.validate_on_submit():
+        response = requests.post(f'{API_ENDPOINT}/register', json={
+            'username': form.username.data,
+            'email': form.email.data,
+            'password': form.password.data
+        })
+        if response.status_code == 201:
+            flash('User added successfully!', 'success')
+        else:
+            flash('Failed to add user!', 'error')
+
+    response = requests.get(f'{API_ENDPOINT}/users')
+    users = []
+    if response.status_code == 200:
+        users = response.json()
+
+    return render_template('index.html', form=form, users=users)
+
+if __name__ == '__main__':
+    app.run(debug=True)
