@@ -14,7 +14,7 @@ load_dotenv()
 API_ENDPOINT = os.getenv("API_ENDPOINT")  # get the API endpoint from .env file
 SECRET_KEY = os.getenv("SECRET_KEY")  # get the secret key from .env file
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.config['SECRET_KEY'] = SECRET_KEY
 
 class UserForm(FlaskForm):
@@ -43,7 +43,7 @@ def home():
     if response.status_code == 200:
         users = response.json()
 
-    return render_template('./index.html', form=form, users=users)
+    return render_template('index.html', form=form, users=users)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
