@@ -12,8 +12,10 @@ load_dotenv()
 
 # Define API endpoint
 API_ENDPOINT = os.getenv("API_ENDPOINT")  # get the API endpoint from .env file
+SECRET_KEY = os.getenv("SECRET_KEY")  # get the secret key from .env file
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = SECRET_KEY
 
 class UserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
